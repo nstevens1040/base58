@@ -2,11 +2,13 @@ function Decode-Base58
 {
     [cmdletbinding()]
     Param(
-        [string]$base58_encoded_string
+        [string]$base58_encoded_string,
+        [switch]$output_plaintext,
+        [switch]$output_hexidecimal
     )
-    $leading_ones = [regex]::New("^(1*)").Match($string_to_decode).Groups[1].Length
+    $leading_ones = [regex]::New("^(1*)").Match($base58_encoded_string).Groups[1].Length
     $BASE58 = [System.Text.Encoding]::ASCII.GetBytes('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz')
-    $binary_to_decode = [System.Text.Encoding]::ASCII.GetBytes($string_to_decode)
+    $binary_to_decode = [System.Text.Encoding]::ASCII.GetBytes($base58_encoded_string)
     $mapped = [byte[]]::New($binary_to_decode.length)
     for($i = 0; $i -lt $binary_to_decode.length; $i++)
     {
@@ -28,6 +30,12 @@ function Decode-Base58
     (1..($leading_zeroes - $leading_ones)).ForEach({
         $decoded = $decoded[1..($decoded.Length - 1)]
     })
-    $decoded_hex_string = [string]::Join([string]::Empty,@($decoded.ForEach({ $_.ToString('x2') })))
-    return $decoded_hex_string
+    if($output_plaintext)
+    {
+        $plaintext = [System.Text.Encoding]::ASCII.GetString($decoded)
+        return $plaintext
+    } else {
+        $decoded_hex_string = [string]::Join([string]::Empty,@($decoded.ForEach({ $_.ToString('x2') })))
+        return $decoded_hex_string
+    }
 }
