@@ -3,8 +3,7 @@ function Decode-Base58
     [cmdletbinding()]
     Param(
         [string]$base58_encoded_string,
-        [switch]$output_plaintext,
-        [switch]$output_hexidecimal
+        [switch]$output_plaintext
     )
     $leading_ones = [regex]::New("^(1*)").Match($base58_encoded_string).Groups[1].Length
     $BASE58 = [System.Text.Encoding]::ASCII.GetBytes('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz')
