@@ -2,7 +2,7 @@ function Encode-Base58
 {
     [cmdletbinding()]
     Param(
-        [string]$hex_string
+        [string]$string_to_encode
     )
     $BASE58 = [System.Text.Encoding]::ASCII.GetBytes('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz')
     $binary_to_encode = [byte[]]::New($hex_string.length / 2)
